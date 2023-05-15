@@ -51,7 +51,7 @@ function ReferenceChart({ chart }: { chart: Chart }) {
 
 export default function ReferenceAccordion({ chart }: { chart: Chart }) {
   return (
-    <Center flexDirection="column">
+    <Center flexDirection="column" my={5}>
       <Accordion allowToggle>
         <AccordionItem>
           <h2>
@@ -67,7 +67,7 @@ export default function ReferenceAccordion({ chart }: { chart: Chart }) {
               <ReferenceChart chart={chart} />
             </TableContainer>
             <Link as={NextLink} href='https://www.wbgt.sg/' target="_blank">
-              source
+              Source
             </Link>
           </AccordionPanel>
         </AccordionItem>

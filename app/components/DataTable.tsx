@@ -64,8 +64,8 @@ export default function DataTable({ data }: { data: Data[] }) {
     .reduce((acc, curr) => acc < curr ? acc : curr)
 
   return (
-    <Center flexDirection="column">
-      <Heading>Wet Bulb Globe Temperature</Heading>
+    <Center flexDirection="column" gap={5} mt={5}>
+      <Heading my={3}>Wet Bulb Globe Temperature</Heading>
       <TableContainer>
         <Table size="sm" variant='simple'>
           <TableCaption>Air temperature, relative humidity, and wet bulb globe temperature (WBGT)</TableCaption>
