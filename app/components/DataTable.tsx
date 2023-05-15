@@ -48,7 +48,7 @@ const showOnMobile = {
 export default function DataTable({ data }: { data: Data[] }) {
   let [dataWithDistance, setDataWithDistance] = useState<Data[]>()
 
-  if (navigator.geolocation && !dataWithDistance) {
+  if (typeof window !== 'undefined' && navigator.geolocation && !dataWithDistance) {
     navigator.geolocation.getCurrentPosition(position => {
       let newData = data.map(item => ({
         ...item,
