@@ -1,6 +1,6 @@
 "use client"
 
-import { TableContainer, Table, TableCaption, Thead, Tr, Th, Tbody, Td, Container, Center, Heading } from "@chakra-ui/react"
+import { TableContainer, Table, TableCaption, Thead, Tr, Th, Tbody, Td, Container, Center, Heading, Text } from "@chakra-ui/react"
 import { Data } from "../api"
 import WBGTTag from "./WBGTTag"
 import { useState } from "react"
@@ -59,6 +59,10 @@ export default function DataTable({ data }: { data: Data[] }) {
     })
   }
 
+  let updateTime = data
+    .flatMap(item => [item.temperature.timestamp, item.humidity.timestamp])
+    .reduce((acc, curr) => acc < curr ? acc : curr)
+
   return (
     <Center flexDirection="column">
       <Heading>Wet Bulb Globe Temperature</Heading>
@@ -72,7 +76,6 @@ export default function DataTable({ data }: { data: Data[] }) {
               <Th>WBGT</Th>
               <Th isNumeric>Temp (°C)</Th>
               <Th isNumeric>RH (%)</Th>
-              <Th {...hideOnMobile}>Updated</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -83,12 +86,12 @@ export default function DataTable({ data }: { data: Data[] }) {
                   <Td><WBGTTag label={item.wbgt.value} colour={item.wbgt.colour} /></Td>
                   <Td isNumeric>{item.temperature.value}</Td>
                   <Td isNumeric>{item.humidity.value}</Td>
-                  <Td {...hideOnMobile}>{toRelativeMinutes(item.humidity.timestamp)}</Td>
                 </Tr>
               ))}
           </Tbody>
         </Table>
       </TableContainer>
+      <Text>Updated {toRelativeMinutes(updateTime)}</Text>
     </Center>
   )
 }
