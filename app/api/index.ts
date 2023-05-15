@@ -108,8 +108,8 @@ function combineData(temperature: LatestData, humidity: LatestData): Data[] {
 export async function getData(): Promise<Data[]> {
   let date = (new Date()).toISOString().substring(0, 10)
 
-  let temperature = await getLatestData("air-temperature", date)
-  let humidity = await getLatestData("relative-humidity", date)
+  let temperature = getLatestData("air-temperature", date)
+  let humidity = getLatestData("relative-humidity", date)
 
-  return combineData(temperature, humidity)
+  return combineData(await temperature, await humidity)
 }
