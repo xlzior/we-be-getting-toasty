@@ -1,53 +1,15 @@
-import { WBGT, getWBGT } from "./wbgt"
+import { getDateTime, oneMinuteBefore } from "../utils/date"
+import { WBGT, getWBGT } from "../utils/wbgt"
+import { ApiResponse, Data, DataType, LatestData, Station } from "./types"
 
-type Station = {
-  id: string,
-  device_id: string,
-  name: string,
-  location: {
-    latitude: number,
-    longitude: number
-  }
+function getURL(dataType: DataType, datetime: string) {
+  return `https://api.data.gov.sg/v1/environment/${dataType}?date_time=${datetime}`
 }
 
-type Reading = {
-  station_id: string,
-  value: number
-}
-
-type DataItem = {
-  timestamp: string,
-  readings: Reading[]
-}
-
-type Response = {
-  metadata: {
-    stations: Station[]
-  },
-  items: DataItem[]
-}
-
-type LatestReading = {
-  timestamp: string,
-  station_id: string,
-  station: Station,
-  value: number
-}
-
-type LatestData = {
-  [key: string]: LatestReading
-}
-
-type DataType = "air-temperature" | "relative-humidity"
-
-function getURL(dataType: DataType, date: string) {
-  return `https://api.data.gov.sg/v1/environment/${dataType}?date=${date}`
-}
-
-async function getLatestData(dataType: DataType, date: string): Promise<LatestData> {
-  let response: Response = await fetch(
-    getURL(dataType, date),
-    { next: { revalidate: 600 } })
+async function getLatestData(dataType: DataType, datetime: string): Promise<LatestData> {
+  let response: ApiResponse = await fetch(
+    getURL(dataType, datetime),
+    { next: { revalidate: 60 } })
   .then(res => res.json())
 
   const latestData: LatestData = {}
@@ -66,21 +28,6 @@ async function getLatestData(dataType: DataType, date: string): Promise<LatestDa
   })
 
   return latestData
-}
-
-export type Data = {
-  station_id: string,
-  station: Station,
-  temperature: {
-    timestamp: string,
-    value: number
-  },
-  humidity: {
-    timestamp: string,
-    value: number
-  },
-  wbgt: WBGT,
-  distance?: number
 }
 
 function combineData(temperature: LatestData, humidity: LatestData): Data[] {
@@ -106,10 +53,27 @@ function combineData(temperature: LatestData, humidity: LatestData): Data[] {
 }
 
 export async function getData(): Promise<Data[]> {
-  let date = (new Date()).toISOString().substring(0, 10)
+  let datetime = getDateTime()
+  let results: { [key: string]: Data } = {}
 
-  let temperature = getLatestData("air-temperature", date)
-  let humidity = getLatestData("relative-humidity", date)
+  let prevNumStations = -1
+  let numStations = 0
 
-  return combineData(await temperature, await humidity)
+  while (prevNumStations != numStations) {
+    const temperature = getLatestData("air-temperature", datetime)
+    const humidity = getLatestData("relative-humidity", datetime)
+    const newData = combineData(await temperature, await humidity)
+
+    newData.forEach(item => {
+      if (!results[item.station_id]) {
+        results[item.station_id] = item
+      }
+    })
+
+    prevNumStations = numStations
+    numStations = Object.keys(results).length
+    datetime = oneMinuteBefore(newData[0].temperature.timestamp)
+  }
+
+  return Object.values(results)
 }

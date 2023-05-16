@@ -1,9 +1,10 @@
 "use client"
 
-import { TableContainer, Table, TableCaption, Thead, Tr, Th, Tbody, Td, Container, Center, Heading, Text } from "@chakra-ui/react"
-import { Data } from "../api"
-import WBGTTag from "./WBGTTag"
 import { useState } from "react"
+import { TableContainer, Table, TableCaption, Thead, Tr, Th, Tbody, Td, Container, Center, Heading, Text } from "@chakra-ui/react"
+import WBGTTag from "./WBGTTag"
+import { Data } from "../api/types"
+import { distance } from "../utils/location"
 
 const rtf = new Intl.RelativeTimeFormat('en', { style: 'long' })
 
@@ -12,37 +13,8 @@ const toRelativeMinutes = (date: string) => {
   return rtf.format(delta, 'minute')
 }
 
-type Coordinates = {
-  latitude: number,
-  longitude: number
-}
-
-const distance = (coords1: Coordinates, coords2: Coordinates) => {
-  let { latitude: lat1, longitude: lon1 } = coords1;
-  let { latitude: lat2, longitude: lon2 } = coords2;
-
-  const R = 6371e3; // metres
-  const φ1 = lat1 * Math.PI/180; // φ, λ in radians
-  const φ2 = lat2 * Math.PI/180;
-  const Δφ = (lat2-lat1) * Math.PI/180;
-  const Δλ = (lon2-lon1) * Math.PI/180;
-
-  const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-            Math.cos(φ1) * Math.cos(φ2) *
-            Math.sin(Δλ/2) * Math.sin(Δλ/2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
-  const d = R * c; // in metres
-
-  return d
-}
-
 const hideOnMobile = {
   className: "hidden sm:table-cell"
-}
-
-const showOnMobile = {
-  className: "sm:hidden"
 }
 
 export default function DataTable({ data }: { data: Data[] }) {

@@ -1,7 +1,7 @@
 import DataTable from "./components/DataTable";
 import ReferenceAccordion from "./components/ReferenceAccordion";
 import { getData } from "./api";
-import { getChart } from "./api/wbgt";
+import { getChart } from "./utils/wbgt";
 
 export default async function Home() {
   const data = await getData()

@@ -2,7 +2,7 @@
 
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Center, Link, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react"
 import NextLink from 'next/link'
-import { Chart } from "../api/wbgt"
+import { Chart } from "../utils/wbgt"
 import WBGTTag from "./WBGTTag"
 
 function ReferenceChart({ chart }: { chart: Chart }) {
