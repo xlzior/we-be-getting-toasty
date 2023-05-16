@@ -11,7 +11,7 @@ function getURL(dataType: DataType, datetime: string) {
 async function getLatestData(dataType: DataType, datetime: string): Promise<LatestData> {
   let response: ApiResponse = await fetch(
     getURL(dataType, datetime),
-    { next: { revalidate: REVALIDATION_TIME } })
+    { next: { revalidate: 0 } })
   .then(res => res.json())
   .catch(error => console.error(error))
 
