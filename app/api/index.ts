@@ -1,6 +1,8 @@
 import { getDateTime, oneMinuteBefore } from "../utils/date"
-import { WBGT, getWBGT } from "../utils/wbgt"
-import { ApiResponse, Data, DataType, LatestData, Station } from "./types"
+import { getWBGT } from "../utils/wbgt"
+import { ApiResponse, Data, DataType, LatestData } from "./types"
+
+const REVALIDATION_TIME = 60 * 10 // 10 minutes
 
 function getURL(dataType: DataType, datetime: string) {
   return `https://api.data.gov.sg/v1/environment/${dataType}?date_time=${datetime}`
@@ -9,8 +11,9 @@ function getURL(dataType: DataType, datetime: string) {
 async function getLatestData(dataType: DataType, datetime: string): Promise<LatestData> {
   let response: ApiResponse = await fetch(
     getURL(dataType, datetime),
-    { next: { revalidate: 60 } })
+    { next: { revalidate: REVALIDATION_TIME } })
   .then(res => res.json())
+  .catch(error => console.error(error))
 
   const latestData: LatestData = {}
 

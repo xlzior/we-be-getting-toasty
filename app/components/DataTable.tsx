@@ -2,9 +2,9 @@
 
 import { useState } from "react"
 import { TableContainer, Table, TableCaption, Thead, Tr, Th, Tbody, Td, Container, Center, Heading, Text } from "@chakra-ui/react"
-import WBGTTag from "./WBGTTag"
 import { Data } from "../api/types"
 import { distance } from "../utils/location"
+import WBGTTag from "./WBGTTag"
 
 const rtf = new Intl.RelativeTimeFormat('en', { style: 'long' })
 
