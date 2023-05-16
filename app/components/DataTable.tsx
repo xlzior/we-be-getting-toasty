@@ -24,10 +24,15 @@ export default function DataTable({ data }: { data: Data[] }) {
     navigator.geolocation.getCurrentPosition(position => {
       let newData = data.map(item => ({
         ...item,
-        distance: Math.floor(distance(position.coords, item.station.location)) / 1000
+        distance: Math.round(distance(position.coords, item.station.location)) / 1000
       }))
       newData.sort((a, b) => a.distance - b.distance)
       setDataWithDistance(newData)
+    }, error => {
+      console.error(error)
+    }, {
+      enableHighAccuracy: false,
+      maximumAge: 1000 * 60 * 60
     })
   }
 
