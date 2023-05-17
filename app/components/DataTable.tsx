@@ -44,9 +44,9 @@ export default function DataTable({ data }: { data: Data[] }) {
             <Tr>
               <Th>Location</Th>
               { dataWithDistance && <Th {...hideOnMobile} isNumeric>Distance (km)</Th> }
-              <Th>WBGT</Th>
-              <Th isNumeric>Temp (°C)</Th>
-              <Th isNumeric>RH (%)</Th>
+              <Th px={1}>WBGT (°C)</Th>
+              <Th px={1} isNumeric>Temp (°C)</Th>
+              <Th px={1} isNumeric>RH (%)</Th>
             </Tr>
           </Thead>
           <Tbody>
