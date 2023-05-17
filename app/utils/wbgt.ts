@@ -1,10 +1,4 @@
-function range(min: number, max: number, step: number) {
-  let result = []
-  for (let i = min; i <= max; i += step) {
-    result.push(i)
-  }
-  return result
-}
+import { range } from "."
 
 let temperatures = range(27, 43, 1)
 let humidities = range(40, 100, 5)

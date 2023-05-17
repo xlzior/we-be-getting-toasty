@@ -5,13 +5,7 @@ import { TableContainer, Table, TableCaption, Thead, Tr, Th, Tbody, Td, Containe
 import { Data } from "../api/types"
 import { distance } from "../utils/location"
 import WBGTTag from "./WBGTTag"
-
-const rtf = new Intl.RelativeTimeFormat('en', { style: 'long' })
-
-const toRelativeMinutes = (date: string) => {
-  let delta = Math.floor((Date.parse(date) - Date.now()) / (1000 * 60))
-  return rtf.format(delta, 'minute')
-}
+import { toRelativeMinutes } from "../utils/date"
 
 const hideOnMobile = {
   className: "hidden sm:table-cell"
