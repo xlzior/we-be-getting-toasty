@@ -23,7 +23,7 @@ export default function DataTable({ data }: { data: Data[] }) {
       newData.sort((a, b) => a.distance - b.distance)
       setDataWithDistance(newData)
     }, error => {
-      console.error(error)
+
     }, {
       enableHighAccuracy: false,
       maximumAge: 1000 * 60 * 60
