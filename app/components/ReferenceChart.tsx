@@ -26,13 +26,13 @@ export default function ReferenceChart({ chart }: { chart: Chart }) {
         </Thead>
         <Tbody>
           <Tr>
-            <Th
-              rowSpan={chart.humidities.length + 1}
-              style={{ writingMode: 'vertical-rl' }}
-              textAlign="center"
-              className="transform rotate-180"
-            >
-              Relative Humidity
+            <Th rowSpan={chart.humidities.length + 1}>
+              <div
+                style={{ writingMode: 'vertical-lr' }}
+                className="transform rotate-180"
+              >
+                Relative Humidity
+              </div>
             </Th>
           </Tr>
           {chart.humidities.map((rh, i) => (
